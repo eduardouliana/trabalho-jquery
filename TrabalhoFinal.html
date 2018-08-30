@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Trabalho</title>
+	<script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="flexslider.css" type="text/css">	
+	<script src="jquery.flexslider.js"></script>
+	<script src="jquery.inputmask.bundle.js"></script>
+	<script src="jquery.validate.min.js"></script>
+
+	<script src="js/jquery.prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
+	<link rel="stylesheet" href="css/prettyPhoto.css" type="text/css" media="screen" title="prettyPhoto main stylesheet"
+charset="utf-8" />
+		
+	<script type="text/javascript">
+		$(document).ready(function () {
+
+			$( "#menu" ).menu();
+    		
+    		$('.flexslider').flexslider();
+
+    		$('#datanasc').datepicker();
+    		/*$('#telefone').inputmask('(99) 9999[9]-9999');
+    		$('#email').inputmask('email');
+			*/
+			$.getJSON('estados_cidades.json', function (data) {
+				var items = [];
+				var options = '<option value="">escolha um estado</option>';	
+				$.each(data, function (key, val) {
+					options += '<option value="' + val.nome + '">' + val.nome + '</option>';
+				});					
+				$("#estados").html(options);								
+				$("#estados").change(function () {								
+					var options_cidades = '';
+					var str = "";										
+					$("#estados option:selected").each(function () {
+						str += $(this).text();
+					});					
+					$.each(data, function (key, val) {
+						if(val.nome == str) {							
+							$.each(val.cidades, function (key_city, val_city) {
+								options_cidades += '<option value="' + val_city + '">' + val_city + '</option>';
+							});							
+						}
+					});
+					$("#cidades").html(options_cidades);					
+				}).change();					
+			});
+
+			$("area[rel^='prettyPhoto']").prettyPhoto();
+				
+				$(".gallery:first a[rel^='prettyPhoto']").prettyPhoto({animation_speed:'normal',theme:'light_square',slideshow:3000, autoplay_slideshow: true});
+				$(".gallery:gt(0) a[rel^='prettyPhoto']").prettyPhoto({animation_speed:'fast',slideshow:10000, hideflash: true});
+				$("#custom_content a[rel^='prettyPhoto']:first").prettyPhoto({
+					custom_markup: '<div id="map_canvas" style="width:260px; height:265px"></div>',
+					changepicturecallback: function(){ initialize(); }
+				});
+
+				$("#custom_content a[rel^='prettyPhoto']:last").prettyPhoto({
+					custom_markup: '<div id="bsap_1259344" class="bsarocks bsap_d49a0984d0f377271ccbf01a33f2b6d6"></div><div id="bsap_1237859" class="bsarocks bsap_d49a0984d0f377271ccbf01a33f2b6d6" style="height:260px"></div><div id="bsap_1251710" class="bsarocks bsap_d49a0984d0f377271ccbf01a33f2b6d6"></div>',
+					changepicturecallback: function(){ _bsap.exec(); }
+				});
+
+				$('#topo').click(function() {
+					$('html, body').animate({scrollTop:0}, 'slow');
+				});
+				
+		});
+	</script>
+	  <style>
+	    .ui-menu { 
+	    	width: 150px; 
+	  	}
+  </style>
+</head>
+<body>
+	<div>
+		<h1>Eduardo Antonio Uliana</h1>
+	</div>
+
+	<ul id="menu">
+  		<li><div>Página inicial</div></li>
+  		<li><div>Produtos</div>
+    		<ul>
+      			<li><div>Perecível</div></li>
+      			<li><div>Não perecível</div></li>
+    		</ul>
+  		</li>
+  		<li><div>Cadastro</div></li>
+  		<li><div>Quem somo</div></li>
+  		<li><div>Contato</div></li>
+	</ul>
+
+	<div class="flexslider" id="banner">
+  		<ul class="slides">
+    		<li>
+      			<img src="imagens/img1.jpg"/>
+    		</li>
+    		<li>
+      			<img src="imagens/img2.jpg"/>
+    		</li>
+    		<li>
+      			<img src="imagens/img3.jpg"/>
+    		</li>
+  		</ul>
+	</div>
+	<form method="post" action="">
+		Nome: <input type="text" id="nome" /><br />
+		E-mail(*): <input type="text" id="email" required /><br />
+		Telefone(*): <input type="text" id="telefone" required /><br />
+		Data Nasc: <input type="text" id="datanasc" /><br />				
+		<div>
+			<select id="estados">
+				<option value=""></option>
+			</select>
+			<select id="cidades"></select>
+		</div>
+		<button type="submit">Validar</button>
+	</form>
+
+<div>
+	<h2>Galeria de fotos</h2>
+		<ul class="gallery clearfix">
+			<li><a href="imagens/fullscreen/2.jpg" rel="prettyPhoto[gallery1]"><img src="imagens/thumbnails/t_2.jpg" width="60" height="60" alt="Nice building" /></a></li>
+			<li><a href="imagens/fullscreen/3.jpg" rel="prettyPhoto[gallery1]"><img src="imagens/thumbnails/t_3.jpg" width="60" height="60" alt="Fire!" /></a></li>
+			<li><a href="imagens/fullscreen/4.jpg" rel="prettyPhoto[gallery1]"><img src="imagens/thumbnails/t_4.jpg" width="60" height="60" alt="Rock climbing" /></a></li>
+			<li><a href="imagens/fullscreen/5.jpg" rel="prettyPhoto[gallery1]"><img src="imagens/thumbnails/t_5.jpg" width="60" height="60" alt="Fly kite, fly!" /></a></li>
+			<li><a href="imagens/fullscreen/6.jpg" rel="prettyPhoto[gallery1]"><img src="imagens/thumbnails/t_2.jpg" width="60" height="60" alt="Nice building" /></a></li>
+		</ul>
+</div>
+
+<div>
+	<button type="button" id="topo">Voltar ao topo</button>
+</div>
+		
+</body>
+</html>
